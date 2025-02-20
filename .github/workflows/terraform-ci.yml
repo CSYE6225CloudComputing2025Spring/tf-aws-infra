@@ -1,0 +1,25 @@
+name: Terraform Continuous Integration
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Repository Code
+        uses: actions/checkout@v3
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - name: Initialize
+        run: terraform init
+
+      - name: Format
+        run: terraform fmt -check
+
+      - name: Validate
+        run: terraform validate
