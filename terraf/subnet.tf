@@ -16,7 +16,7 @@ resource "aws_subnet" "first_private" {
 }
 
 resource "aws_subnet" "second_private" {
-  vpc_id            = aws_vpc.my_vpc.id
+  vpc_id            = aws_vpc.my_vpc.ibad
   cidr_block        = "10.0.2.0/24"
   availability_zone = data.aws_availability_zones.available.names[1]
   tags = {
