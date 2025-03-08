@@ -1,13 +1,13 @@
 resource "aws_security_group" "application_security_group" {
-  name = "application_security_group"
+  name        = "application_security_group"
   description = "application_security_group"
   vpc_id      = aws_vpc.my_vpc.id
 
   ingress {
     description = "SSH"
-    from_port  = 22
-    to_port = 22
-    protocol = "tcp"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -29,7 +29,7 @@ resource "aws_security_group" "application_security_group" {
 
   ingress {
     description = "Web App"
-    from_port   = 8080 
+    from_port   = 8080
     to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
@@ -37,10 +37,10 @@ resource "aws_security_group" "application_security_group" {
 
 
   egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

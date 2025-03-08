@@ -15,11 +15,14 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v1
 
-      - name: Initialize
-        run: terraform init
+      - name: Initialize Terraform
+        run: |
+          cd terraf
+          terraform init
+      
 
       - name: Format
-        run: terraform fmt -check
+        run: terraform fmt -check -recursive
 
       - name: Validate
         run: terraform validate
