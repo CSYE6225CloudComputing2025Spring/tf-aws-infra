@@ -4,7 +4,7 @@ variable "profile" {
 }
 
 variable "key_name" {
-  type        = string
+  type    = string
   default = "csye6225"
 }
 
