@@ -47,3 +47,19 @@ resource "aws_security_group" "application_security_group" {
     Name = "app-security-group"
   }
 }
+
+# Create DB Security Group
+resource "aws_security_group" "db_sg" {
+  name_prefix = "database-security-group"
+  vpc_id      = aws_vpc.my_vpc.id
+}
+
+# Add ingress rule to allow TCP traffic on the port 3306 for MySQL/MariaDB
+resource "aws_security_group_rule" "db_ingress" {
+  type                     = "ingress"
+  from_port                = 3306
+  to_port                  = 3306
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.db_sg.id
+  source_security_group_id = aws_security_group.application_security_group.id # The source of the traffic should be the application security group.
+}

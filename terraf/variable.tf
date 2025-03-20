@@ -8,3 +8,13 @@ variable "key_name" {
   default = "csye6225"
 }
 
+variable "db_password" {
+  description = "The password for RDS"
+  type        = string
+  sensitive   = true
+}
+
+variable "aws_region" {
+  type    = string
+  default = "us-east-1"
+}
