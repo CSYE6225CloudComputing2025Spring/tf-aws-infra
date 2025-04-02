@@ -1,17 +1,17 @@
 resource "aws_launch_template" "webapp" {
-  name_prefix   = "csye6225-asg-"          # 启动模板的前缀
-  image_id      = var.ami_id               # 
-  instance_type = "t2.small"               # 
+  name_prefix   = "csye6225-asg-" # 启动模板的前缀
+  image_id      = var.ami_id      # 
+  instance_type = "t2.small"      # 
 
-  key_name = var.key_name                  # SSH 
+  key_name = var.key_name # SSH 
 
   iam_instance_profile {
-  name = aws_iam_instance_profile.ec2_profile.name #  	SAME_AS_CURRENT_EC2_INSTANCE
-}
+    name = aws_iam_instance_profile.ec2_profile.name #  	SAME_AS_CURRENT_EC2_INSTANCE
+  }
 
   network_interfaces {
-    associate_public_ip_address = true     # AssociatePublicIpAddress 	True
-    security_groups             = [aws_security_group.application_security_group.id]  # Security Group 	WebAppSecurityGroup
+    associate_public_ip_address = true                                               # AssociatePublicIpAddress 	True
+    security_groups             = [aws_security_group.application_security_group.id] # Security Group 	WebAppSecurityGroup
   }
 
   user_data = base64encode(<<-EOF

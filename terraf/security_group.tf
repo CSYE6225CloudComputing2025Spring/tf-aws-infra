@@ -11,11 +11,11 @@ resource "aws_security_group" "application_security_group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-ingress {
-    description = "The source of the traffic should be the load balancer security group"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
+  ingress {
+    description     = "The source of the traffic should be the load balancer security group"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
     security_groups = [aws_security_group.load_balancer_sg.id]
   }
 

@@ -1,11 +1,11 @@
 data "aws_route53_zone" "subdomain" {
-  name         = "${var.subdomain}.${var.domain}."  
+  name         = "${var.subdomain}.${var.domain}."
   private_zone = false
 }
 
 resource "aws_route53_record" "webapp_dns" {
   zone_id = data.aws_route53_zone.subdomain.zone_id
-  name    = "${var.subdomain}.${var.domain}"                    
+  name    = "${var.subdomain}.${var.domain}"
   type    = "A"
 
   alias {

@@ -30,11 +30,11 @@ variable "instance_port" {
 }
 
 variable "subdomain" {
-  type        = string
+  type    = string
   default = ""
 }
 
 variable "domain" {
-  type        = string
+  type    = string
   default = ""
 }
