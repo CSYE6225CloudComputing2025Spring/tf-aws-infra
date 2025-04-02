@@ -12,27 +12,11 @@ resource "aws_security_group" "application_security_group" {
   }
 
   ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "HTTPS"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    description = "Web App"
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "The source of the traffic should be the load balancer security group"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.load_balancer_sg.id]
   }
 
 
@@ -62,4 +46,40 @@ resource "aws_security_group_rule" "db_ingress" {
   protocol                 = "tcp"
   security_group_id        = aws_security_group.db_sg.id
   source_security_group_id = aws_security_group.application_security_group.id # The source of the traffic should be the application security group.
+}
+
+
+
+resource "aws_security_group" "load_balancer_sg" {
+  name        = "load_balancer_sg"
+  description = "load_balancer_sg"
+  vpc_id      = aws_vpc.my_vpc.id
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTPS"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "load-balancer-security-group"
+  }
+
 }

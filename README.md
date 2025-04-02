@@ -20,7 +20,7 @@ Public Route Table: Routes traffic from public subnets to the Internet Gateway.
 Private Route Table: Routes traffic within the private subnets.
 Public Route: Allows internet access via the Internet Gateway.
 
-# Usage Instructions
+# Usage Instructions(tfvars)
 Step 1: Clone the Repository
 git clone <your-repo-url>
 cd <your-project-folder>
