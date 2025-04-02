@@ -1,24 +1,20 @@
-resource "aws_instance" "web" {
-  ami                    = var.ami_id
-  instance_type          = "t2.small"
-  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
-  subnet_id              = aws_subnet.first_public.id
-  vpc_security_group_ids = [aws_security_group.application_security_group.id]
-  key_name               = var.key_name
+resource "aws_launch_template" "webapp" {
+  name_prefix   = "csye6225-asg-"          # 启动模板的前缀
+  image_id      = var.ami_id               # 
+  instance_type = "t2.small"               # 
 
-  root_block_device {
-    volume_size           = 25
-    volume_type           = "gp2" # General Purpose SSD GP2
-    delete_on_termination = true  # Ensures EBS volume is deleted when EC2 is terminated
+  key_name = var.key_name                  # SSH 
+
+  iam_instance_profile {
+  name = aws_iam_instance_profile.ec2_profile.name #  	SAME_AS_CURRENT_EC2_INSTANCE
+}
+
+  network_interfaces {
+    associate_public_ip_address = true     # AssociatePublicIpAddress 	True
+    security_groups             = [aws_security_group.application_security_group.id]  # Security Group 	WebAppSecurityGroup
   }
 
-  disable_api_termination = false # Protect against accidental termination: No
-
-  tags = {
-    Name = "Custom-AMI-EC2-Instance"
-  }
-
-  user_data = <<-EOF
+  user_data = base64encode(<<-EOF
               #!/bin/bash
               
               # store rds information in etc environment folder
@@ -64,4 +60,5 @@ resource "aws_instance" "web" {
                 exit 1
               fi
               EOF
+  )
 }

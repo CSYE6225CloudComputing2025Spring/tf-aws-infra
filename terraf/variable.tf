@@ -23,3 +23,18 @@ variable "ami_id" {
   type    = string
   default = ""
 }
+
+variable "instance_port" {
+  description = "port that app listens on"
+  default     = 3000 # 可能要改
+}
+
+variable "subdomain" {
+  type        = string
+  default = ""
+}
+
+variable "domain" {
+  type        = string
+  default = ""
+}
