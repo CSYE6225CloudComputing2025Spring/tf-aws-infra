@@ -1,7 +1,7 @@
 resource "aws_launch_template" "webapp" {
-  name_prefix   = "csye6225-asg-" # 启动模板的前缀
-  image_id      = var.ami_id      # 
-  instance_type = "t2.small"      # 
+  name          = "csye6225-asg-launch-template" # 启动模板
+  image_id      = var.ami_id                     # 
+  instance_type = "t2.small"                     # 
 
   key_name = var.key_name # SSH 
 

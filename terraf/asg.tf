@@ -7,19 +7,19 @@ locals {
 }
 
 resource "aws_autoscaling_group" "webapp_asg" {
-  name                    = "csye6225-asg"
+  name                    = "csye6225-as-group"
   desired_capacity        = 3  # 
   min_size                = 3  # 
   max_size                = 5  # 
   default_instance_warmup = 60 #
 
-  health_check_type         = "EC2"                   #不太一样
+  health_check_type         = "ELB"                   # 不太一样
   health_check_grace_period = 300                     #
   vpc_zone_identifier       = local.public_subnet_ids #  使用你自己的子网
 
   launch_template {
     id      = aws_launch_template.webapp.id
-    version = "$Latest" # 他也用的latest但不一样的写法
+    version = "$Latest" # 
   }
 
   target_group_arns = [aws_lb_target_group.webapp_tg.arn] # 与 ALB 配合  EC2 instances launched in the auto-scaling group should now be load-balanced.
