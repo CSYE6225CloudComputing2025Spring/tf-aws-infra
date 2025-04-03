@@ -1,8 +1,8 @@
 resource "aws_lb_target_group" "webapp_tg" {
-  name     = "web-alb-target-group" #
-  port     = 8080                   # port that application in instance listen on
-  protocol = "HTTP"                 #
-  vpc_id   = aws_vpc.my_vpc.id      # target type is default to "instance"
+  name     = "nodejs-alb-target-group" #
+  port     = 8080                      # port that application in instance listen on
+  protocol = "HTTP"                    #
+  vpc_id   = aws_vpc.my_vpc.id         # target type is default to "instance"
 
   health_check {
     path                = "/healthz" #
@@ -16,14 +16,14 @@ resource "aws_lb_target_group" "webapp_tg" {
 }
 
 resource "aws_lb" "webapp_alb" {
-  name               = "webapp-application-load-balancer"
+  name               = "nodejs-application-load-balancer"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.load_balancer_sg.id] # lb sg
   subnets            = local.public_subnet_ids                  # 部署在多个 AZ 的子网中
 
   tags = {
-    Name = "webapp-application-load-balancer"
+    Name = "nodejs-application-load-balancer"
   }
 }
 
