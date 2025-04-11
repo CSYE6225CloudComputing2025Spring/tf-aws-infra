@@ -40,3 +40,82 @@ resource "aws_iam_role_policy_attachment" "cloudwatch_agent_server_policy_attach
   role       = aws_iam_role.ec2_role.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
 }
+
+# KMS EBS 访问策略
+resource "aws_iam_policy" "kms_ebs_access" {
+  name        = "ec2-kms-ebs-access"
+  description = "Allow EC2 to use KMS for EBS encryption"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt",
+          "kms:Encrypt",
+          "kms:ReEncrypt*",
+          "kms:GenerateDataKey*",
+          "kms:DescribeKey",
+          "kms:CreateGrant"
+        ],
+        Resource = aws_kms_key.kms_ec2.arn
+      }
+    ]
+  })
+}
+
+# Secrets Manager 访问策略
+resource "aws_iam_policy" "secrets_manager_access" {
+  name        = "ec2-secrets-manager-access"
+  description = "Allow EC2 to access Secrets Manager"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "secretsmanager:GetSecretValue",
+          "secretsmanager:DescribeSecret"
+        ],
+        Resource = aws_secretsmanager_secret.rds_password_secret.arn
+      }
+    ]
+  })
+}
+
+# 将KMS策略附加到角色
+resource "aws_iam_role_policy_attachment" "attach_kms_ebs" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.kms_ebs_access.arn
+}
+
+# 将Secrets Manager策略附加到角色
+resource "aws_iam_role_policy_attachment" "attach_secrets_manager" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.secrets_manager_access.arn
+}
+
+resource "aws_iam_policy" "kms_secrets_access" {
+  name        = "ec2-kms-secrets-access"
+  description = "Allow EC2 to use KMS key for Secrets Manager decryption"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "kms:Decrypt",
+          "kms:DescribeKey",
+          "kms:GenerateDataKey*"
+        ],
+        Resource = aws_kms_key.kms_secrets.arn
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_kms_secrets" {
+  role       = aws_iam_role.ec2_role.name
+  policy_arn = aws_iam_policy.kms_secrets_access.arn
+}

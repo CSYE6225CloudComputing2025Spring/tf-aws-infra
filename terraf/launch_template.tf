@@ -14,16 +14,34 @@ resource "aws_launch_template" "webapp" {
     security_groups             = [aws_security_group.application_security_group.id] # Security Group 	WebAppSecurityGroup
   }
 
+  block_device_mappings {
+    device_name = "/dev/sda1"
+
+    ebs {
+      volume_size           = 25
+      volume_type           = "gp2"
+      encrypted             = true
+      kms_key_id            = aws_kms_key.kms_ec2.arn
+      delete_on_termination = true
+    }
+  }
+
   user_data = base64encode(<<-EOF
               #!/bin/bash
+
+              # 获取RDS密码从Secrets Manager
+              RDS_PASSWORD=$(aws secretsmanager get-secret-value \
+               --secret-id ${aws_secretsmanager_secret.rds_password_secret.id} \
+               --query 'SecretString' --output text | jq -r '.password')
+
               
               # store rds information in etc environment folder
               cat <<EOT >> /etc/environment
               DB_HOST="${aws_db_instance.rds.address}"
-              DB_PORT="3306"
-              DB_USER="root"
-              DB_PASSWORD="${var.db_password}"
-              DB_NAME="cloud_computing"
+              DB_PORT="${var.db_port}"
+              DB_USER="${var.db_user}"
+              DB_PASSWORD="$RDS_PASSWORD"
+              DB_NAME="${var.db_name}"
               AWS_REGION="${var.aws_region}"
               S3_BUCKET="${aws_s3_bucket.private_bucket.bucket}"
               EOT
