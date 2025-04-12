@@ -8,7 +8,7 @@ resource "random_password" "rds_password" {
   special = false # 不使用特殊字符
 }
 
-# 2. 创建 Secrets Manager 密钥（用于 RDS 密码）
+# 2. 创建 Secrets Manager 密钥
 resource "aws_secretsmanager_secret" "rds_password_secret" {
   name       = "rds-password-${random_id.rds_secret_suffix.hex}"
   kms_key_id = aws_kms_key.kms_secrets.arn
@@ -23,7 +23,7 @@ resource "aws_secretsmanager_secret_version" "rds_password_value" {
   secret_string = random_password.rds_password.result # 使用生成的随机密码
 }
 
-# 4. 确保 Secrets Manager 密钥已经创建后，再通过 data 资源获取 RDS 密码
+
 data "aws_secretsmanager_secret" "rds_password" {
   name = aws_secretsmanager_secret.rds_password_secret.name # 引用创建的 Secrets Manager 密钥名称
 }

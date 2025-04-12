@@ -3,13 +3,13 @@ resource "aws_security_group" "application_security_group" {
   description = "application_security_group"
   vpc_id      = aws_vpc.my_vpc.id
 
-  ingress {
+  /*  ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+  } */
 
   ingress {
     description     = "The source of the traffic should be the load balancer security group"
@@ -55,13 +55,13 @@ resource "aws_security_group" "load_balancer_sg" {
   description = "load_balancer_sg"
   vpc_id      = aws_vpc.my_vpc.id
 
-  ingress {
+  /* ingress {
     description = "HTTP"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-  }
+  }*/
 
   ingress {
     description = "HTTPS"

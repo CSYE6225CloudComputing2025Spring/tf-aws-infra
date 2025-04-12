@@ -29,8 +29,10 @@ resource "aws_lb" "webapp_alb" {
 
 resource "aws_lb_listener" "webapp_http_listener" {
   load_balancer_arn = aws_lb.webapp_alb.arn #
-  port              = 80                    #  Set up an Application load balancer to accept HTTP traffic on the port 80
-  protocol          = "HTTP"                #
+  port              = 443                   #  Set up an Application load balancer to accept HTTP traffic on the port 80
+  protocol          = "HTTPS"               #
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.certificate_arn
 
   default_action {
     type             = "forward"                         #

@@ -1,7 +1,7 @@
 # AWS Networking Setup using Terraform
 This repository provides an Infrastructure-as-Code (IaC) setup using Terraform to create and manage AWS networking resources. The Terraform configuration allows you to dynamically deploy multiple VPCs with associated subnets, route tables, and an internet gateway in AWS.
 
-# Prerequisites
+# Prerequisitess
 # AWS CLI 
 1. Install AWS CLI
 2. Configure AWS credentials:
@@ -38,4 +38,11 @@ terraform apply
 
 Step 5: Destroy the Infrastructure
 terraform destroy
+
+aws acm import-certificate ^
+  --certificate fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.crt" ^
+  --private-key fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.key" ^
+  --certificate-chain fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.ca-bundle" ^
+  --profile demo
+
 

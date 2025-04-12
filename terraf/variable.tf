@@ -42,3 +42,9 @@ variable "db_name" {
   type    = string
   default = "cloud_computing"
 }
+
+variable "certificate_arn" {
+  description = "The ACM certificate ARN for the environment"
+  type        = string
+  default     = ""
+}
