@@ -16,7 +16,7 @@ resource "random_id" "kms_secrets_suffix" {
   byte_length = 4
 }
 
-# 2. 创建 KMS Key（用于加密 Secrets Manager 的 RDS 密码）
+
 resource "aws_kms_key" "kms_rds" {
   description             = "KMS key for encrypting RDS password in Secrets Manager"
   enable_key_rotation     = true
@@ -106,7 +106,7 @@ resource "aws_kms_alias" "alias_kms_ec2" {
 }
 
 
-# 4. 创建 KMS Key（用于 S3 加密）
+
 resource "aws_kms_key" "kms_s3" {
   description             = "KMS key for encrypting S3 buckets"
   enable_key_rotation     = true
@@ -119,7 +119,7 @@ resource "aws_kms_alias" "alias_kms_s3" {
   target_key_id = aws_kms_key.kms_s3.key_id
 }
 
-# 5. 创建 KMS Key（用于 Secrets Manager，包括 Email 凭证）
+
 resource "aws_kms_key" "kms_secrets" {
   description             = "KMS key for encrypting Secrets Manager secrets like email credentials"
   enable_key_rotation     = true

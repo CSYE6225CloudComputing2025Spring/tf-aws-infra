@@ -39,3 +39,10 @@ terraform apply
 Step 5: Destroy the Infrastructure
 terraform destroy
 
+aws acm import-certificate ^
+  --certificate fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.crt" ^
+  --private-key fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.key" ^
+  --certificate-chain fileb://"C:\Users\administratorzi\Downloads\demo_dreamagician.cloud\demo_dreamagician_cloud.ca-bundle" ^
+  --profile demo
+
+
