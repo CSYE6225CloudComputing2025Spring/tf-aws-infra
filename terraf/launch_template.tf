@@ -30,9 +30,10 @@ resource "aws_launch_template" "webapp" {
               #!/bin/bash
 
               # 获取RDS密码从Secrets Manager
-              RDS_PASSWORD=$(aws secretsmanager get-secret-value \
-               --secret-id ${aws_secretsmanager_secret.rds_password_secret.id} \
-               --query 'SecretString' --output text | jq -r '.password')
+              sudo apt update && sudo apt install curl unzip -y
+              curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+              unzip awscliv2.zip
+              sudo ./aws/install
 
               
               # store rds information in etc environment folder
@@ -40,7 +41,7 @@ resource "aws_launch_template" "webapp" {
               DB_HOST="${aws_db_instance.rds.address}"
               DB_PORT="${var.db_port}"
               DB_USER="${var.db_user}"
-              DB_PASSWORD="$RDS_PASSWORD"
+              DB_PASSWORD="$(aws secretsmanager get-secret-value --secret-id ${aws_secretsmanager_secret.rds_password_secret.id} --query 'SecretString' --output text)"
               DB_NAME="${var.db_name}"
               AWS_REGION="${var.aws_region}"
               S3_BUCKET="${aws_s3_bucket.private_bucket.bucket}"
