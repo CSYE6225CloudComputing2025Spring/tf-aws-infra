@@ -1,7 +1,7 @@
 # AWS Networking Setup using Terraform
 This repository provides an Infrastructure-as-Code (IaC) setup using Terraform to create and manage AWS networking resources. The Terraform configuration allows you to dynamically deploy multiple VPCs with associated subnets, route tables, and an internet gateway in AWS.
 
-# Prerequisites
+# Prerequisite
 # AWS CLI 
 1. Install AWS CLI
 2. Configure AWS credentials:
