@@ -3,7 +3,7 @@ resource "aws_security_group" "application_security_group" {
   description = "application_security_group"
   vpc_id      = aws_vpc.my_vpc.id
 
-/*  ingress {
+  /*  ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22

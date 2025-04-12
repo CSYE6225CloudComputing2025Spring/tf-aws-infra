@@ -46,5 +46,5 @@ variable "db_name" {
 variable "certificate_arn" {
   description = "The ACM certificate ARN for the environment"
   type        = string
-  default = ""
+  default     = ""
 }
